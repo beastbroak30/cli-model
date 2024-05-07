@@ -4,6 +4,9 @@ import sys
 import time 
 from colorama import Fore 
 import json 
+import socket 
+
+
 
 with open('api.json') as f:
     api=json.load(f)
@@ -47,10 +50,13 @@ def chat_loop():
                 break
             if user_input.lstrip().rstrip()== '':
                 continue
-            elif user_input.lower().startswith('/change'):
+            elif user_input.lower().lstrip().rstrip().startswith('/change'):
                 chat_loop() 
             elif user_input in ['clear','cls']:
-                os.system('cls')
+                if os.name() == 'nt':
+                    os.system('cls')
+                else:
+                    os.system('clear')
             else:
                 try:
                     output = send_message(user_input,ai)
@@ -73,15 +79,44 @@ def send_message(message,ai):
     return chat_completion.choices[0].message.content
 
 
+def chkint():
+    try:
+        socket.create_connection(('www.googe.com',80))
+        return True
+    except socket.gaierror:
+        return False
+        
+
 def loading_bar():
-    print("\rLoading...", end="\r")
-    for i in range(5):
-        sys.stdout.write("\rLoading")  
-        sys.stdout.write("." * (i + 1))  
-        sys.stdout.flush()
-        time.sleep(0.5)
-    print(" ")
+    try:
+        print("\rLoading...", end="\r")
+        for i in range(5):
+            sys.stdout.write("\rLoading")  
+            sys.stdout.write("." * (i + 1))  
+            sys.stdout.flush()
+            time.sleep(0.5)
+        print(" ")
+    except KeyboardInterrupt:
+        print('Exiting the program')
+
 
 loading_bar()
-print(art)
-chat_loop()
+if chkint():
+    print(art)
+    chat_loop()
+else:
+    print('Please connect yourself to internet')
+    print('exiting after 10s, for you to connect to internet before that!')
+    for i in range(0,10):
+        time.sleep(1)
+        if chkint():
+            print(art)
+            chat_loop()
+            break
+        else:
+            if chkint() != False:
+                print('exiting now :-(')
+                
+            continue
+        
+    
