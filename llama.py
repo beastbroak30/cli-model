@@ -81,7 +81,7 @@ def send_message(message,ai):
 
 def chkint():
     try:
-        socket.create_connection(('www.googe.com',80))
+        socket.create_connection(('www.google.com',80))
         return True
     except socket.gaierror:
         return False
