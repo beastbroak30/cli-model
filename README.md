@@ -21,7 +21,7 @@ A python cli based program to use various  models of groq via api
    ```
 3. Install the required dependencies:
    ```shell
-   pip install -r req
+   pip install -r requirements
    ```
 4. - Make a account at [console of groq](https://console.groq.com)
    - Go to api at left side
